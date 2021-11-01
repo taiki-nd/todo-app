@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const TodoList = () => {
@@ -85,7 +86,10 @@ export const TodoList = () => {
                 ) : (
                   <Btn onClick={() => onClickCompleteBtn(key, val)} >incomplete</Btn>
                 )}
-                <Btn>edit</Btn>
+                  <Link to={`/todoes/${val.id}/edit`}>
+                    <Btn>編集</Btn>
+                  </Link>
+                
               </Btns>
             </List>
           )
