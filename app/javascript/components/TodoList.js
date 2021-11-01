@@ -19,15 +19,31 @@ export const TodoList = () => {
   }, [])
   //第二引数にからの配列を渡すことでTodoList.jsが描画された際に一度だけuseEffectが走る。
 
+  const [searchContent, setSearchContent] = useState('')
+  //searchに関するstate
+
   return (
     <>
       <h1>Todoes</h1>
       <InputAndRemoveAll>
-        <Input />
-        <RemoveAllBtn>RemoveAll</RemoveAllBtn>
+        <Input 
+          type="text"
+          placeholder="search todo ..."
+          onChange={e => {
+            setSearchContent(e.target.value)
+          }} />
+        <RemoveAllBtn onClick={onClickRemoveAllBtn} >RemoveAll</RemoveAllBtn>
       </InputAndRemoveAll>
       <div>
-        {todoes.map((val, key) => {
+        {todoes.filter((val) => {
+          if(searchContent === ""){
+            return val
+          }else if(val.content.toLowerCase().includes(searchContent.toLowerCase())){
+            //検索ワードに対して検索されるようにフィルターにかける。
+            return val
+          }
+          //filterにかけたtodoに対してmapで展開していく。
+        }).map((val, key) => {
           //格納された全てのtodoをmapで展開していきます。
           return(
             <List key={key}>
