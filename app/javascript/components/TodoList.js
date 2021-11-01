@@ -87,7 +87,7 @@ export const TodoList = () => {
                   <Btn onClick={() => onClickCompleteBtn(key, val)} >incomplete</Btn>
                 )}
                   <Link to={`/todoes/${val.id}/edit`}>
-                    <Btn>編集</Btn>
+                    <Btn>edit</Btn>
                   </Link>
                 
               </Btns>
