@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
-  get 'top/index'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  root to: redirect('/todoes')
+
+  get 'todoes', to: 'top#index'
+  get 'todoes/new', to: 'top#index'
+  get 'todoes/:id/edit', to: 'top#index'
+  #全て'top#index'にルーティングしていく。
+
+  namespace :api do
+    namespace :v1 do
+      delete '/todoes/destroy_all', to: 'todoes#destroy_all'
+      #resources :todoesでは賄えないアクションなので別途記述する。
+      resources :todoes, only: %i[index show create update destroy]
+    end
+  end
+
 end
