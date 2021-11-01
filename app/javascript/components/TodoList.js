@@ -30,11 +30,13 @@ export const TodoList = () => {
         {todoes.map((val, key) => {
           //格納された全てのtodoをmapで展開していきます。
           return(
-            <div key={key}>
-              <span>{val.content}</span>
-              <button>complete</button>
-              <button>edit</button>
-            </div>
+            <List key={key}>
+              <TodoContent>{val.content}</TodoContent>
+              <Btns>
+                <Btn>complete</Btn>
+                <Btn>edit</Btn>
+              </Btns>
+            </List>
           )
         })}
       </div>
@@ -67,4 +69,31 @@ const RemoveAllBtn = styled.button`
   border-radius: 3px;
   color: #fff;
   cursor: pointer;
+`
+
+const List = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 7px auto;
+  padding: 10px;
+  font-size: 25px;
+`
+
+const Btns = styled.div`
+  justify-content: space-around;
+`
+
+const Btn = styled.button`
+  width: fit-content;
+  font-size: 20px;
+  padding: 0 5px;
+  margin: 0 5px;
+  &:hover{
+    background-color: #ccffcc
+  }
+`
+
+const TodoContent = styled.span`
+  font-size: 24px;
 `
