@@ -22,6 +22,37 @@ export const TodoList = () => {
   const [searchContent, setSearchContent] = useState('')
   //searchに関するstate
 
+  const onClickRemoveAllBtn = () => {
+    const confirm = window.confirm('Do you really want to delete all TodoLists?')
+    //いきなり削除できないように確認ダイアログを表示させます。
+    if(confirm){
+      axios.delete('/api/v1/todoes/destroy_all')
+      //todoes_controllerのdestroy_allを選択します
+      .then(resp => {
+        setTodoes([])
+        //setTodoesをからの配列に更新することで表示を無くします。
+      })
+    }
+  }
+
+  const onClickCompleteBtn = (index, val) => {
+    //valは選択されたtodoの情報が格納されています
+    const val2 = {
+      id: val.id,
+      content: val.content,
+      complete: !val.complete
+      //completeカラムをひっくり返します（boolean型なのでtrueならfalseに、falseならtrueに）
+    }
+    axios.patch(`/api/v1/todoes/${val.id}`, val2)
+    .then(resp => {
+      const BrandNewTodoes = [...todoes]
+      BrandNewTodoes[index].complete = resp.data.complete
+      //completeボタンを押されたtodoを選んで、レスポンスで返ってきたcompleteカラムを代入します
+      setTodoes(BrandNewTodoes)
+      //これで表示がかわります
+    })
+  }
+
   return (
     <>
       <h1>Todoes</h1>
@@ -47,9 +78,13 @@ export const TodoList = () => {
           //格納された全てのtodoをmapで展開していきます。
           return(
             <List key={key}>
-              <TodoContent>{val.content}</TodoContent>
+              <TodoContent complete={val.complete}>{val.content}</TodoContent>
               <Btns>
-                <Btn>complete</Btn>
+                {val.complete ? (
+                  <Btn onClick={() => onClickCompleteBtn(key, val)} >complete</Btn>
+                ) : (
+                  <Btn onClick={() => onClickCompleteBtn(key, val)} >incomplete</Btn>
+                )}
                 <Btn>edit</Btn>
               </Btns>
             </List>
@@ -112,4 +147,7 @@ const Btn = styled.button`
 
 const TodoContent = styled.span`
   font-size: 24px;
+  ${({ complete }) => complete && `
+    opacity: 0.4;
+  `}
 `
