@@ -5,3 +5,18 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+initial_todoes = [
+  {
+    content: 'initial todo 1'
+  },
+  {
+    content: 'initial todo 2'
+  },
+  {
+    content: 'initial todo 3'
+  }
+]
+
+initial_todoes.each do |todo|
+  Todo.create(todo)
+end
