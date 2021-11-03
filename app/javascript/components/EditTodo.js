@@ -1,8 +1,20 @@
 import styled from 'styled-components'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+toast.configure();//忘れがちです
 
 export const EditTodo = (props) => {
+
+  const notify = () => {
+    toast.success("Todo successfully updated!", {
+      //NewTodo.jsをコピペするとメッセージがおかしいので修正しください。
+      position: "bottom-center",
+      hideProgressBar: true
+    });
+  }
 
   const initialTodoStatus = {
     id: null,
@@ -29,6 +41,52 @@ export const EditTodo = (props) => {
     console.log(props.match.params.id)//これで確認できます
   }, [props.match.params.id]);//idの変更でuseEffectが走るようにします。（editページが開いたら実行される）
 
+  const onChangeEditTodo = event => {
+    const { name, value } = event.target;
+    console.log(name)//content 
+    console.log(value)//編集した文字列
+    setCurrentTodo({ ...currentTodo, [name]: value });
+    //todoを展開して、カラム名を指定してvalueに更新します。
+  };
+
+  const onClickUpdateTodo = () => {
+    axios.patch(`/api/v1/todoes/${currentTodo.id}`, currentTodo)
+    .then(resp => {
+      notify();//ここでtoastを呼び出す
+      props.history.push("/todoes");
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  };
+
+  const onClickCompleteBtn = (val) => {
+    var updateVal = {
+      id: val.id,
+      name: val.name,
+      complete: !val.complete
+      //completeカラムをひっくり返します（boolean型なのでtrueならfalseに、falseならtrueに）
+    };
+    axios.patch(`/api/v1/todoes/${val.id}`, updateVal)
+    .then(resp => {
+      setCurrentTodo(resp.data);
+    })
+  };
+
+  const onClickDeleteBtn = () => {
+    const alert = window.confirm('Do you really want to delete this TodoList?')
+    if (alert) {
+      axios.delete(`/api/v1/todoes/${currentTodo.id}`)
+      .then(resp => {
+        console.log(resp.data)
+        props.history.push("/todoes");
+      })
+      .catch(e => {
+        console.log(e)
+      })
+    }
+  }
+
   return (
     <>
       <h1>EditTodo</h1>
@@ -37,19 +95,22 @@ export const EditTodo = (props) => {
         <EditInput 
           type="text"
           value={currentTodo.content}
-          content="content" 
-          onChange={} />
-        <UpdateBtn>update</UpdateBtn>
+          name="content"
+          onChange={onChangeEditTodo} />
+        <UpdateBtn onClick={onClickUpdateTodo} >update</UpdateBtn>
       </EditInputAndBtn>
       <h2>CurrentStatus</h2>
       <Status>
-        Complete Incomplete
+        {currentTodo.complete ? "Complete" : "Incomplete" }
       </Status>
       <h2>EditStatus</h2>
       <Btns>
-        <CompleteBtn>complete</CompleteBtn>
-        <IncompleteBtn>incomplete</IncompleteBtn>
-        <DeleteBtn>delete</DeleteBtn>
+        {currentTodo.complete ? (
+          <IncompleteBtn onClick={() => onClickCompleteBtn(currentTodo)}>incomplete</IncompleteBtn>
+        ) : (
+          <CompleteBtn onClick={() => onClickCompleteBtn(currentTodo)}>complete</CompleteBtn>
+        )}
+        <DeleteBtn onClick={onClickDeleteBtn}>delete</DeleteBtn>
       </Btns>
     </>
   )
