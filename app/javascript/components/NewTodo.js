@@ -2,7 +2,8 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'//toastifyのcss
+import "!style-loader!css-loader!react-toastify/dist/ReactToastify.css"//toastifyのcss
+
 
 toast.configure();//toastifyを有効にするには必須（忘れがち）
 

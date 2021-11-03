@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import "!style-loader!css-loader!react-toastify/dist/ReactToastify.css"//toastifyのcss
 
 toast.configure();//忘れがちです
 
