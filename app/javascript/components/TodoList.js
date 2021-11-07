@@ -82,9 +82,9 @@ export const TodoList = () => {
               <TodoContent complete={val.complete}>{val.content}</TodoContent>
               <Btns>
                 {val.complete ? (
-                  <Btn onClick={() => onClickCompleteBtn(key, val)} >complete</Btn>
-                ) : (
                   <Btn onClick={() => onClickCompleteBtn(key, val)} >incomplete</Btn>
+                ) : (
+                  <Btn onClick={() => onClickCompleteBtn(key, val)} >complete</Btn>
                 )}
                   <Link to={`/todoes/${val.id}/edit`}>
                     <Btn>edit</Btn>
