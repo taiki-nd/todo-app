@@ -9,6 +9,7 @@
 https://todo-app-rails-react.herokuapp.com/todoes
 
 * Qiitaにてアプリの作成方法をアウトプットしています。
+
 part1
 https://qiita.com/taiki-nd/items/aa9d0a03d1950876efab
 
