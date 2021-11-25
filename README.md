@@ -1,7 +1,8 @@
 # todo-app
 
 ## アプリ概要
-バックエンドにRails（API）、フロントエンドにReactを採用したtodoアプリ
+* バックエンドにRails（API）、フロントエンドにReactを採用したtodoアプリ
+* qiitaにアウトプットするために再度作成
 
 ## URL
 * デプロイ先
